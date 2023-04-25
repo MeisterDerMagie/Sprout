@@ -8,7 +8,7 @@ public class ArduinoConnection : MonoBehaviour
 {
     private readonly SerialPort _dataStream = new SerialPort("COM5", 9600);
     private bool _isStreaming = false;
-    [SerializeField] private int readTimeout = 100;
+    [SerializeField] private int readTimeout = 50;
     
     public static event Action<string> onNewMessage = delegate(string message) {  };
 
@@ -24,13 +24,18 @@ public class ArduinoConnection : MonoBehaviour
         string value = ReadSerialPort();
         if (value != null)
         {
-            onNewMessage.Invoke(value);
+            onNewMessage?.Invoke(value);
         }
     }
 
     private void OnDestroy()
     {
         _dataStream.Close();
+    }
+
+    public void SendMessageToArduino(string message)
+    {
+        _dataStream.WriteLine(message);
     }
 
     private void OpenConnection()
