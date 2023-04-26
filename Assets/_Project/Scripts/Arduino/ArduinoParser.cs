@@ -3,9 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using Wichtel;
 
 public class ArduinoParser : MonoBehaviour
 {
+    [SerializeField] private float zeroPercentSoilHumidity, hundredPercentSoilHumidity;
+    public static event Action<float, float> onNewSoilHumidityValue = delegate(float absoluteValue, float percentValue) {  };
+    public static event Action<float> onNewAirTemperatureValue = delegate(float newValue) {  };
+    public static event Action<float> onNewAirHumidityValue = delegate(float newValue) {  };
+    
     private void Start()
     {
         ArduinoConnection.onNewMessage += OnNewArduinoMessage;
@@ -23,19 +29,20 @@ public class ArduinoParser : MonoBehaviour
         //soil humidity
         if (TryReadValue(message, "soilhum", out float soilHumidity))
         {
-            Debug.Log("Soil humidity is " + soilHumidity);
+            float percentValue = MathW.Remap(soilHumidity, zeroPercentSoilHumidity, hundredPercentSoilHumidity, 0f, 1f);
+            onNewSoilHumidityValue?.Invoke(soilHumidity, percentValue);
         }
 
         //air temperature
         if (TryReadValue(message, "airtmp", out float airTemperature))
         {
-            Debug.Log("Air temperature is " + airTemperature);
+            onNewAirTemperatureValue?.Invoke(airTemperature);
         }
         
         //air humidity
         if (TryReadValue(message, "airhum", out float airHumidity))
         {
-            Debug.Log("Air humidity is " + airHumidity);
+            onNewAirHumidityValue?.Invoke(airHumidity);
         }
     }
 

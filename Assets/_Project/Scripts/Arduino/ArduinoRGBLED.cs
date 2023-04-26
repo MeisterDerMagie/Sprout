@@ -4,13 +4,20 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ArduinoRGBLED : MonoBehaviour
 {
     private readonly SerialPort _dataStream = new SerialPort("COM5", 9600);
     [SerializeField] private ArduinoConnection connection;
     [SerializeField, ReadOnly] private Color currentColor;
-    
+
+    private void OnApplicationQuit()
+    {
+        //turn the led off when the program shuts down (OnApplicationQuit is called before OnDestroy)
+        SetLEDColor(Color.black);
+    }
+
     [Button, DisableInEditorMode]
     public void SetLEDColor(Color color)
     {
@@ -38,11 +45,5 @@ public class ArduinoRGBLED : MonoBehaviour
         connection.SendMessageToArduino("R" + r);
         connection.SendMessageToArduino("G" + g);
         connection.SendMessageToArduino("B" + b);
-        
-        /*
-        _dataStream.WriteLine("R" + r);
-        _dataStream.WriteLine("G" + g);
-        _dataStream.WriteLine("B" + b);
-        */
     }
 }
