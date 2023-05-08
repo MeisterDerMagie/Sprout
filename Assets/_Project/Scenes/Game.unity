@@ -6170,7 +6170,7 @@ GameObject:
   - component: {fileID: 1076078766}
   - component: {fileID: 1076078765}
   m_Layer: 0
-  m_Name: ArduinoOpenConnection
+  m_Name: ArduinoConnection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6217,6 +6217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a9ebab3f8c37743b2e3b19ccf5cd61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _serialPort: COM5
   readTimeout: 50
 --- !u!1 &1086478965
 GameObject:

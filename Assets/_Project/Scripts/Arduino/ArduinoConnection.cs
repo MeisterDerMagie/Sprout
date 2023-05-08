@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO.Ports;
+using Wichtel.Utilities;
 
 public class ArduinoConnection : MonoBehaviour
 {
-    private readonly SerialPort _dataStream = new SerialPort("COM5", 9600);
+    private SerialPort _dataStream;
     private bool _isStreaming = false;
     [SerializeField] private int readTimeout = 50;
     
@@ -14,6 +15,8 @@ public class ArduinoConnection : MonoBehaviour
 
     private void Start()
     {
+        string serialPort = StreamingAssetsUtilities.ReadTextFile("serialPort.txt");
+        _dataStream = new SerialPort(serialPort, 9600);
         OpenConnection();
     }
 
@@ -38,6 +41,7 @@ public class ArduinoConnection : MonoBehaviour
         _dataStream.WriteLine(message);
     }
 
+    
     private void OpenConnection()
     {
         _isStreaming = true;
