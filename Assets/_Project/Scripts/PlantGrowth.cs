@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Wichtel;
@@ -44,6 +45,7 @@ public class PlantGrowth : MonoBehaviour
     private float _currentAirTemperature = 0f;
     private float _currentSoilHumidity = 0f;
     private bool fullyGrown;
+    private float _ledRefreshCounter = 0f; //refresh the led every 2 seconds
 
     private void Start()
     {
@@ -67,16 +69,16 @@ public class PlantGrowth : MonoBehaviour
             return;
         
         bool hasIdealConditions = idealTemperatureRange.ContainsValue(_currentAirTemperature) &&
-                             idealSoilHumidityRange.ContainsValue(_currentSoilHumidity);
+                                  idealSoilHumidityRange.ContainsValue(_currentSoilHumidity);
 
         bool hasToleratedConditions = !hasIdealConditions &&
-                                 toleratedTemperatureRange.ContainsValue(_currentAirTemperature) &&
-                                 toleratedSoilHumidityRange.ContainsValue(_currentSoilHumidity);
+                                      toleratedTemperatureRange.ContainsValue(_currentAirTemperature) &&
+                                      toleratedSoilHumidityRange.ContainsValue(_currentSoilHumidity);
 
         bool hasStagnantConditions = !hasIdealConditions &&
-                                !hasToleratedConditions &&
-                                stagnantTemperatureRange.ContainsValue(_currentAirTemperature) &&
-                                stagnantSoilHumidityRange.ContainsValue(_currentSoilHumidity);
+                                     !hasToleratedConditions &&
+                                     stagnantTemperatureRange.ContainsValue(_currentAirTemperature) &&
+                                     stagnantSoilHumidityRange.ContainsValue(_currentSoilHumidity);
 
         Condition newCondition;
         
@@ -94,6 +96,14 @@ public class PlantGrowth : MonoBehaviour
 
         bool conditionChanged = _previousCondition != newCondition;
         
+        //also refresh every 2 seconds
+        _ledRefreshCounter += Time.deltaTime;
+        if (_ledRefreshCounter >= 2f)
+        {
+            conditionChanged = true;
+            _ledRefreshCounter = 0f;
+        }
+
         //Grow ideal
         if (hasIdealConditions)
         {
