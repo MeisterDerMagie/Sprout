@@ -19,23 +19,9 @@ public class PlantGrowth : MonoBehaviour
     [SerializeField] private Color stagnantColor;
     [SerializeField] private Color shrinkingColor;
     [SerializeField] private Color fullyGrownColor;
-    
-    [Title("Ideal Conditions")]
-    [SerializeField] private Range<float> idealTemperatureRange;
-    [SerializeField] private Range<float> idealSoilHumidityRange;
-    
-    [Title("Tolerated Conditions")]
-    [SerializeField] private Range<float> toleratedTemperatureRange;
-    [SerializeField] private Range<float> toleratedSoilHumidityRange;
 
-    [Title("Stagnant Conditions")]
-    [SerializeField] private Range<float> stagnantTemperatureRange;
-    [SerializeField] private Range<float> stagnantSoilHumidityRange;
-
-    [Title("Growth Speed")]
-    [SerializeField] private float growthSpeedIdeal = 1f;
-    [SerializeField] private float growthSpeedTolerated = 0.5f;
-    [SerializeField] private float shrinkSpeed = 0.5f;
+    [Title("Plant")]
+    public Plant plant;
     
     [Title("Debug")]
     [SerializeField][LabelText("Current Condition")][DisplayAsString]
@@ -68,17 +54,17 @@ public class PlantGrowth : MonoBehaviour
         if (fullyGrown)
             return;
         
-        bool hasIdealConditions = idealTemperatureRange.ContainsValue(_currentAirTemperature) &&
-                                  idealSoilHumidityRange.ContainsValue(_currentSoilHumidity);
+        bool hasIdealConditions = plant.idealTemperatureRange.ContainsValue(_currentAirTemperature) &&
+                                  plant.idealSoilHumidityRange.ContainsValue(_currentSoilHumidity);
 
         bool hasToleratedConditions = !hasIdealConditions &&
-                                      toleratedTemperatureRange.ContainsValue(_currentAirTemperature) &&
-                                      toleratedSoilHumidityRange.ContainsValue(_currentSoilHumidity);
+                                      plant.toleratedTemperatureRange.ContainsValue(_currentAirTemperature) &&
+                                      plant.toleratedSoilHumidityRange.ContainsValue(_currentSoilHumidity);
 
         bool hasStagnantConditions = !hasIdealConditions &&
                                      !hasToleratedConditions &&
-                                     stagnantTemperatureRange.ContainsValue(_currentAirTemperature) &&
-                                     stagnantSoilHumidityRange.ContainsValue(_currentSoilHumidity);
+                                     plant.stagnantTemperatureRange.ContainsValue(_currentAirTemperature) &&
+                                     plant.stagnantSoilHumidityRange.ContainsValue(_currentSoilHumidity);
 
         Condition newCondition;
         
@@ -107,14 +93,14 @@ public class PlantGrowth : MonoBehaviour
         //Grow ideal
         if (hasIdealConditions)
         {
-            _growth += growthSpeedIdeal / 1000f * Time.deltaTime;
+            _growth += plant.growthSpeedIdeal / 1000f * Time.deltaTime;
             if(conditionChanged) led.SetLEDColor(idealColor);
         }
         
         //Grow tolerated
         else if (hasToleratedConditions)
         {
-            _growth += growthSpeedTolerated / 1000f * Time.deltaTime;
+            _growth += plant.growthSpeedTolerated / 1000f * Time.deltaTime;
             if(conditionChanged) led.SetLEDColor(toleratedColor);
         }
         
@@ -128,7 +114,7 @@ public class PlantGrowth : MonoBehaviour
         //Shrink
         else
         {
-            _growth -= shrinkSpeed / 1000f * Time.deltaTime;
+            _growth -= plant.shrinkSpeed / 1000f * Time.deltaTime;
             if(conditionChanged) led.SetLEDColor(shrinkingColor);
         }
         

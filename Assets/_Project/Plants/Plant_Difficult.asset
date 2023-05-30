@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bcd83a6fa632264e8cb0312cd3d8ac9, type: 3}
+  m_Name: Plant_Difficult
+  m_EditorClassIdentifier: 
+  idealTemperatureRange:
+    minimum: 37
+    maximum: 38
+  idealSoilHumidityRange:
+    minimum: 0.6
+    maximum: 0.65
+  toleratedTemperatureRange:
+    minimum: 35
+    maximum: 39
+  toleratedSoilHumidityRange:
+    minimum: 0.5
+    maximum: 0.75
+  stagnantTemperatureRange:
+    minimum: 34
+    maximum: 40
+  stagnantSoilHumidityRange:
+    minimum: 0.4
+    maximum: 0.85
+  growthSpeedIdeal: 20
+  growthSpeedTolerated: 10
+  shrinkSpeed: 10
