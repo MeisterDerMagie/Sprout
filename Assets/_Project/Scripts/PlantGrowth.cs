@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using MEC;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using Wichtel;
 
 public class PlantGrowth : MonoBehaviour
 {
@@ -30,15 +29,17 @@ public class PlantGrowth : MonoBehaviour
     [SerializeField][DisplayAsString] private float _growth = 0f;
     private float _currentAirTemperature = 0f;
     private float _currentSoilHumidity = 0f;
-    private bool fullyGrown;
+    private bool _fullyGrown;
+    private bool _paused = true;
     private float _ledRefreshCounter = 0f; //refresh the led every 2 seconds
 
     private void Start()
     {
         ArduinoParser.onNewAirTemperatureValue += OnNewAirTemperature;
         ArduinoParser.onNewSoilHumidityValue += OnNewSoilHumidity;
-        GameFlow.onFullyGrown += () => fullyGrown = true;
+        GameFlow.onFullyGrown += () => _fullyGrown = true;
         GameFlow.onRestart += OnRestart;
+        GameFlow.onPause += pause => _paused = pause;
     }
 
     private void OnDestroy()
@@ -46,12 +47,11 @@ public class PlantGrowth : MonoBehaviour
         ArduinoParser.onNewAirTemperatureValue -= OnNewAirTemperature;
         ArduinoParser.onNewSoilHumidityValue -= OnNewSoilHumidity;
         GameFlow.onRestart -= OnRestart;
-
     }
 
     private void Update()
     {
-        if (fullyGrown)
+        if (_fullyGrown || _paused)
             return;
         
         bool hasIdealConditions = plant.idealTemperatureRange.ContainsValue(_currentAirTemperature) &&
@@ -136,9 +136,10 @@ public class PlantGrowth : MonoBehaviour
         _previousCondition = newCondition;
     }
 
-    private void OnRestart()
+    private void OnRestart(Plant plant)
     {
-        fullyGrown = false;
+        this.plant = plant;
+        _fullyGrown = false;
         _growth = 0f;
     }
     private void OnNewAirTemperature(float airTemperature) => _currentAirTemperature = airTemperature;

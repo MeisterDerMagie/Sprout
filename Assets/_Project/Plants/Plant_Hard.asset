@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4bcd83a6fa632264e8cb0312cd3d8ac9, type: 3}
-  m_Name: Plant_Difficult
+  m_Name: Plant_Hard
   m_EditorClassIdentifier: 
   idealTemperatureRange:
     minimum: 37

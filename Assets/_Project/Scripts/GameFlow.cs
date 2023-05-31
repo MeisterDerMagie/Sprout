@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class GameFlow : MonoBehaviour
 {
-    public static event Action onRestart = delegate {  };
+    public static event Action<Plant> onRestart = delegate {  };
     public static event Action onFullyGrown = delegate {  };
+    public static event Action<bool> onPause = delegate {  };
     
-    public void Restart() => onRestart?.Invoke();
+    public void Restart(Plant plant) => onRestart?.Invoke(plant);
     public void FullyGrown() => onFullyGrown?.Invoke();
+    public void Pause(bool pause) => onPause?.Invoke(pause);
 }

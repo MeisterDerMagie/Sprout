@@ -14,7 +14,7 @@ public class UIController : MonoBehaviour
         GameFlow.onFullyGrown += OnFullyGrown;
         GameFlow.onRestart += OnRestart;
         
-        OnRestart();
+        OnRestart(null);
     }
 
     private void OnDestroy()
@@ -32,7 +32,7 @@ public class UIController : MonoBehaviour
             trans.gameObject.SetActive(false);
     }
     
-    private void OnRestart()
+    private void OnRestart(Plant plant)
     {
         foreach (Transform trans in showWhileFullyGrown)
             trans.gameObject.SetActive(false);
