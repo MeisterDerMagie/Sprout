@@ -139,7 +139,11 @@ namespace qtools.qhierarchy.phelper
                     }   
 
                     lastActiveScene = EditorSceneManager.GetActiveScene();
+                    #if UNITY_2022_3_OR_NEWER
                     lastSceneCount = SceneManager.loadedSceneCount;
+                    #else
+                    lastSceneCount = SceneManager.sceneCount;
+                    #endif
                 }
             }
             catch 
@@ -164,7 +168,13 @@ namespace qtools.qhierarchy.phelper
 
         public bool isSceneChanged()
         {
-            if (lastActiveScene != EditorSceneManager.GetActiveScene() || lastSceneCount != SceneManager.loadedSceneCount)
+            #if UNITY_2022_3_OR_NEWER
+            int loadedSceneCount = SceneManager.loadedSceneCount;
+            #else
+            int loadedSceneCount = SceneManager.sceneCount;
+            #endif
+            
+            if (lastActiveScene != EditorSceneManager.GetActiveScene() || lastSceneCount != loadedSceneCount)
                 return true;
             else 
                 return false;
