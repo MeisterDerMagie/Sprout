@@ -59,8 +59,13 @@ namespace qtools.qhierarchy.pcomponent
         {
             #if UNITY_2018_3_OR_NEWER
                 PrefabInstanceStatus prefabStatus = PrefabUtility.GetPrefabInstanceStatus(gameObject);
+                #if UNITY_2022_3_OR_NEWER
+                if (prefabStatus == PrefabInstanceStatus.MissingAsset)
+                #else
                 if (prefabStatus == PrefabInstanceStatus.MissingAsset ||
-                    prefabStatus == PrefabInstanceStatus.Disconnected) {
+                    prefabStatus == PrefabInstanceStatus.Disconnected)
+                #endif
+                {
                     QColorUtils.setColor(inactiveColor);
                     GUI.DrawTexture(rect, prefabTexture);
                     QColorUtils.clearColor();

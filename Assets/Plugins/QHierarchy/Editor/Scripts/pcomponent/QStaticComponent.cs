@@ -77,8 +77,10 @@ namespace qtools.qhierarchy.pcomponent
             #endif
             drawQuad( 0, 5, 2, ((staticFlags & StaticEditorFlags.OccludeeStatic       ) > 0));
             drawQuad( 6, 5, 2, ((staticFlags & StaticEditorFlags.OccluderStatic       ) > 0));
+            #if !UNITY_2022_3_OR_NEWER
             drawQuad(88, 5, 2, ((staticFlags & StaticEditorFlags.NavigationStatic     ) > 0));
             drawQuad(94, 5, 2, ((staticFlags & StaticEditorFlags.OffMeshLinkGeneration) > 0));
+            #endif
 
             staticButton.SetPixels32(staticButtonColors);
             staticButton.Apply();
@@ -100,9 +102,11 @@ namespace qtools.qhierarchy.pcomponent
                 menu.AddItem(new GUIContent("Lightmap Static"           ), (intStaticFlags & (int)StaticEditorFlags.ContributeGI) > 0, staticChangeHandler, (int)StaticEditorFlags.ContributeGI);
                 menu.AddItem(new GUIContent("Occluder Static"           ), (intStaticFlags & (int)StaticEditorFlags.OccluderStatic) > 0, staticChangeHandler, (int)StaticEditorFlags.OccluderStatic);
                 menu.AddItem(new GUIContent("Batching Static"           ), (intStaticFlags & (int)StaticEditorFlags.BatchingStatic) > 0, staticChangeHandler, (int)StaticEditorFlags.BatchingStatic);
-                menu.AddItem(new GUIContent("Navigation Static"         ), (intStaticFlags & (int)StaticEditorFlags.NavigationStatic) > 0, staticChangeHandler, (int)StaticEditorFlags.NavigationStatic);
                 menu.AddItem(new GUIContent("Occludee Static"           ), (intStaticFlags & (int)StaticEditorFlags.OccludeeStatic) > 0, staticChangeHandler, (int)StaticEditorFlags.OccludeeStatic);
+                #if !UNITY_2022_3_OR_NEWER
+                menu.AddItem(new GUIContent("Navigation Static"         ), (intStaticFlags & (int)StaticEditorFlags.NavigationStatic) > 0, staticChangeHandler, (int)StaticEditorFlags.NavigationStatic);
                 menu.AddItem(new GUIContent("Off Mesh Link Generation"  ), (intStaticFlags & (int)StaticEditorFlags.OffMeshLinkGeneration) > 0, staticChangeHandler, (int)StaticEditorFlags.OffMeshLinkGeneration);
+                #endif
                 #if UNITY_4_6 || UNITY_4_7
                 #else
                 menu.AddItem(new GUIContent("Reflection Probe Static"   ), (intStaticFlags & (int)StaticEditorFlags.ReflectionProbeStatic) > 0, staticChangeHandler, (int)StaticEditorFlags.ReflectionProbeStatic);

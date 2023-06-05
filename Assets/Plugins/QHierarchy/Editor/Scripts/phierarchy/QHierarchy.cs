@@ -83,7 +83,7 @@ namespace qtools.qhierarchy.phierarchy
 
         public void hierarchyWindowItemOnGUIHandler(int instanceId, Rect selectionRect)
         {
-            try
+            //try
             {
                 QColorUtils.setDefaultColor(GUI.color);
 
@@ -104,13 +104,14 @@ namespace qtools.qhierarchy.phierarchy
 
                 errorHandled.Remove(instanceId);
             }
+            /*
             catch (Exception exception)
             {
                 if (errorHandled.Add(instanceId))
                 {
                     Debug.LogError(exception.ToString());
                 }
-            }
+            }*/
         }
 
         private void drawComponents(List<QBaseComponent> components, Rect selectionRect, ref Rect rect, GameObject gameObject, QObjectList objectList, bool drawBackground = false, float minX = 50)

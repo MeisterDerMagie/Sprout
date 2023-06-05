@@ -11,9 +11,6 @@ namespace qtools.qhierarchy.pcomponent
 {
     public class QGameObjectIconComponent: QBaseComponent
     {
-        // PRIVATE
-        private MethodInfo getIconMethodInfo;
-        private object[] getIconMethodParams;
 
         // CONSTRUCTOR
         public QGameObjectIconComponent ()
@@ -21,12 +18,9 @@ namespace qtools.qhierarchy.pcomponent
             rect.width = 14;
             rect.height = 14;
 
-            getIconMethodInfo   = typeof(EditorGUIUtility).GetMethod("GetIconForObject", BindingFlags.NonPublic | BindingFlags.Static );
-            getIconMethodParams = new object[1];
-
             QSettings.getInstance().addEventListener(QSetting.GameObjectIconShow                 , settingsChanged);
             QSettings.getInstance().addEventListener(QSetting.GameObjectIconShowDuringPlayMode   , settingsChanged);
-            QSettings.getInstance().addEventListener(QSetting.GameObjectIconSize                          , settingsChanged);
+            QSettings.getInstance().addEventListener(QSetting.GameObjectIconSize                 , settingsChanged);
             settingsChanged();
         }
         
@@ -56,10 +50,9 @@ namespace qtools.qhierarchy.pcomponent
         }
 
         public override void draw(GameObject gameObject, QObjectList objectList, Rect selectionRect)
-        {                      
-            getIconMethodParams[0] = gameObject;
-            Texture2D icon = (Texture2D)getIconMethodInfo.Invoke(null, getIconMethodParams );    
-            if (icon != null) 
+        {
+            Texture2D icon = EditorGUIUtility.GetIconForObject(gameObject);
+            if (icon != null)
                 GUI.DrawTexture(rect, icon, ScaleMode.ScaleToFit, true);
         }
                 
@@ -70,7 +63,7 @@ namespace qtools.qhierarchy.pcomponent
                 currentEvent.Use();
 
                 Type iconSelectorType = Assembly.Load("UnityEditor").GetType("UnityEditor.IconSelector");
-                MethodInfo showIconSelectorMethodInfo = iconSelectorType.GetMethod("ShowAtPosition", BindingFlags.Static | BindingFlags.NonPublic);
+                MethodInfo showIconSelectorMethodInfo = iconSelectorType.GetMethod("ShowAtPosition", BindingFlags.Static | BindingFlags.NonPublic, null, new Type[]{typeof(UnityEngine.Object), typeof(Rect), typeof(bool)}, null);
                 showIconSelectorMethodInfo.Invoke(null, new object[] { gameObject, rect, true });
             }
         }
