@@ -12,6 +12,7 @@ public class ArduinoConnection : MonoBehaviour
     [SerializeField] private int readTimeout = 50;
     
     public static event Action<string> onNewMessage = delegate(string message) {  };
+    public static event Action<string> onNewArduinoError = delegate(string errorMessage) {  };
 
     private void Start()
     {
