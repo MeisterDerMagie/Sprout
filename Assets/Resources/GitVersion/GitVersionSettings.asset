@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 085c46ef2d2c48dcb3cb345101568bdb, type: 3}
   m_Name: GitVersionSettings
   m_EditorClassIdentifier: 
-  IsEnabled: 0
+  IsEnabled: 1
